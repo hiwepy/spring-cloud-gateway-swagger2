@@ -1,0 +1,15 @@
+################################################################################################################  
+###接口文档（Swagger UI）配置：  
+################################################################################################################
+spring:  cloud:    gateway:      swagger:        title: Swagger WebFlux Demo
+        description: Swagger WebFlux Demo
+        version: 1.0.0-SNAPSHOT
+        license: Apache License, Version 2.0
+        license-url: https://www.apache.org/licenses/LICENSE-2.0.html
+        contact:
+          name: wandl
+          email: hnxyhcwdl1003@163.com
+        base-package: io.github.wandl
+        base-path-pattern: /**
+        
+        io.github.wandl.api
