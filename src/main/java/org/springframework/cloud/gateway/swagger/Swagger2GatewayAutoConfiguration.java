@@ -34,6 +34,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.gateway.config.GatewayProperties;
 import org.springframework.cloud.gateway.route.RouteLocator;
+import org.springframework.cloud.gateway.swagger.filter.SwaggerHeaderFilter;
 import org.springframework.cloud.gateway.swagger.handler.SwaggerResourceHandler;
 import org.springframework.cloud.gateway.swagger.handler.SwaggerSecurityHandler;
 import org.springframework.cloud.gateway.swagger.handler.SwaggerUiHandler;
@@ -412,6 +413,11 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware {
 						.and(RequestPredicates.accept(MediaType.ALL)), swaggerUiHandler)
 				.andRoute(RequestPredicates.GET("/swagger-resources/configuration/security")
 						.and(RequestPredicates.accept(MediaType.ALL)), swaggerSecurityHandler);
+	}
+	
+	@Bean
+	public SwaggerHeaderFilter swaggerHeaderFilter() {
+		return new SwaggerHeaderFilter();
 	}
 
 	@Override
