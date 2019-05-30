@@ -552,6 +552,19 @@
 			    <version>${swagger.version}</version>
 			</dependency>
 			
+			<!-- https://mvnrepository.com/artifact/com.github.xiaoymin/swagger-bootstrap-ui -->
+			<dependency>
+				<groupId>com.github.xiaoymin</groupId>
+				<artifactId>swagger-bootstrap-ui</artifactId>
+				<version>${swagger-bootstrap-ui.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/com.didispace/swagger-butler-core -->
+			<dependency>
+				<groupId>com.didispace</groupId>
+				<artifactId>swagger-butler-core</artifactId>
+				<version>${swagger-butler.version}</version>
+			</dependency>
+			
 		</dependencies>
 	</dependencyManagement>
 	
@@ -643,7 +656,11 @@
 		    <artifactId>springfox-swagger-ui</artifactId>
 		    <optional>true</optional>
 		</dependency>
-
+		<dependency>
+			<groupId>com.github.xiaoymin</groupId>
+			<artifactId>swagger-bootstrap-ui</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 
 </project>

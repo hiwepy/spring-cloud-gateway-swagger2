@@ -51,6 +51,8 @@ import org.springframework.http.MediaType;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.reactive.config.ResourceHandlerRegistry;
+import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
@@ -91,7 +93,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
 @EnableConfigurationProperties({ Swagger2GatewayProperties.class })
 @EnableSwagger2WebFlux
 @Import({ BeanValidatorPluginsConfiguration.class })
-public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware {
+public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFluxConfigurer {
 
 	private BeanFactory beanFactory;
 
@@ -379,6 +381,14 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware {
 		}
 
 		return responseMessages;
+	}
+	
+	
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/doc.html**").addResourceLocations("classpath:/META-INF/resources/");
+		registry.addResourceHandler("/swagger-ui.html**").addResourceLocations("classpath:/META-INF/resources/");
+		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 	
 	@Bean
