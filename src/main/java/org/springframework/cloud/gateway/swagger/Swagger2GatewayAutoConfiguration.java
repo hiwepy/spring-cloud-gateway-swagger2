@@ -386,9 +386,16 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFl
 	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/doc.html**").addResourceLocations("classpath:/META-INF/resources/");
-		registry.addResourceHandler("/swagger-ui.html**").addResourceLocations("classpath:/META-INF/resources/");
-		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+		if(!registry.hasMappingForPattern("/doc.html**")) {
+			registry.addResourceHandler("/doc.html**").addResourceLocations("classpath:/META-INF/resources/");
+		}
+		if(!registry.hasMappingForPattern("/swagger-ui.html**")) {
+			registry.addResourceHandler("/swagger-ui.html**").addResourceLocations("classpath:/META-INF/resources/");
+		}
+		if(!registry.hasMappingForPattern("/webjars/**")) {
+			registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+			//registry.addResourceHandler("/webjars/**").addResourceLocations("/webjars/").resourceChain(true).addResolver(new WebJarsResourceResolver());
+		}
 	}
 	
 	@Bean
