@@ -13,6 +13,7 @@ import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 public class GatewaySwaggerResourcesProvider implements SwaggerResourcesProvider {
 
 	public static final String API_URI = "/v2/api-docs";
+	public static final String API_EXT_URI = "/v2/api-docs-ext";
 	private final RouteLocator routeLocator;
 	private final GatewayProperties gatewayProperties;
 
