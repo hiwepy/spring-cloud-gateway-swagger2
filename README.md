@@ -11,7 +11,7 @@ spring-cloud-gateway-swagger2 是一个spring boot starter 插件，它实现了
 
 ```xml
 <dependency>
-	<groupId>com.github.vindell</groupId>
+	<groupId>com.github.hiwepy</groupId>
 	<artifactId>spring-cloud-gateway-swagger2</artifactId>
 	<version>${project.version}</version>
 </dependency>
