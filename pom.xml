@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.cloud</groupId>
 		<artifactId>spring-cloud-starter-parent</artifactId>
-		<version>Hoxton.SR3</version>
+		<version>Hoxton.SR5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	
@@ -15,7 +15,7 @@
 	<packaging>jar</packaging>
 	<name>Spring Cloud Gateway Swagger2</name>
 	<description>Spring Cloud Gateway Swagger2</description>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<url>https://github.com/hiwepy/${project.artifactId}</url>
 	
 	<licenses>
@@ -387,8 +387,9 @@
         <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
 		<!-- http://oss.jfrog.org/artifactory/oss-snapshot-local/io/springfox/ -->
-		<springfox.version>3.0.0-SNAPSHOT</springfox.version>
-		<swagger.version>1.5.22</swagger.version>
+		<!-- http://oss.jfrog.org/artifactory/oss-snapshot-local/io/springfox/ -->
+		<springfox.version>2.10.5</springfox.version> <!-- 3.0.0-SNAPSHOT -->
+		<swagger.version>1.5.24</swagger.version>
 		<swagger-bootstrap-ui.version>1.9.3</swagger-bootstrap-ui.version> 
 		<swagger-butler.version>1.2.0</swagger-butler.version>
 	</properties>
@@ -557,12 +558,6 @@
 				<groupId>com.github.xiaoymin</groupId>
 				<artifactId>swagger-bootstrap-ui</artifactId>
 				<version>${swagger-bootstrap-ui.version}</version>
-			</dependency>
-			<!-- https://mvnrepository.com/artifact/com.didispace/swagger-butler-core -->
-			<dependency>
-				<groupId>com.didispace</groupId>
-				<artifactId>swagger-butler-core</artifactId>
-				<version>${swagger-butler.version}</version>
 			</dependency>
 			
 		</dependencies>
