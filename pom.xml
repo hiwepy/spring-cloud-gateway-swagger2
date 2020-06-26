@@ -389,7 +389,7 @@
 		<!-- http://oss.jfrog.org/artifactory/oss-snapshot-local/io/springfox/ -->
 		<springfox.version>2.10.5</springfox.version> <!-- 3.0.0-SNAPSHOT -->
 		<swagger.version>1.5.24</swagger.version>
-		<swagger-bootstrap-ui.version>1.9.3</swagger-bootstrap-ui.version> 
+		<swagger-bootstrap-ui.version>1.9.6</swagger-bootstrap-ui.version> 
 		<swagger-butler.version>1.2.0</swagger-butler.version>
 	</properties>
 	
