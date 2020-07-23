@@ -13,7 +13,7 @@ spring-cloud-gateway-swagger2 是一个spring boot starter 插件，它实现了
 <dependency>
 	<groupId>com.github.hiwepy</groupId>
 	<artifactId>spring-cloud-gateway-swagger2</artifactId>
-	<version>${project.version}</version>
+	<version>1.0.0.RELEASE</version>
 </dependency>
 ```
 
