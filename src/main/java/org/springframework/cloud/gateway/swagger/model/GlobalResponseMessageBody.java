@@ -20,7 +20,7 @@ public class GlobalResponseMessageBody {
 	/**
 	 * 响应码
 	 **/
-	private int code;
+	private String code;
 
 	/**
 	 * 响应消息
@@ -32,11 +32,11 @@ public class GlobalResponseMessageBody {
 	 **/
 	private String modelRef;
 
-	public int getCode() {
+	public String getCode() {
 		return code;
 	}
 
-	public void setCode(int code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 

@@ -575,6 +575,13 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <scope>compile</scope>
+		</dependency>
 
 		<!-- Core starter, including auto-configuration support, logging and YAML -->
 		<dependency>

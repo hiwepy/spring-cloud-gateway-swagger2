@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeansException;
@@ -47,10 +48,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.reactive.config.ResourceHandlerRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.function.server.RequestPredicates;
@@ -59,18 +60,17 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.builders.ResponseMessageBuilder;
-import springfox.documentation.schema.ModelRef;
+import springfox.documentation.builders.RequestParameterBuilder;
+import springfox.documentation.builders.ResponseBuilder;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.BasicAuth;
 import springfox.documentation.service.Contact;
-import springfox.documentation.service.Parameter;
-import springfox.documentation.service.ResponseMessage;
+import springfox.documentation.service.RequestParameter;
+import springfox.documentation.service.Response;
 import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
@@ -80,7 +80,7 @@ import springfox.documentation.swagger.web.SecurityConfiguration;
 import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 import springfox.documentation.swagger.web.UiConfiguration;
 import springfox.documentation.swagger.web.UiConfigurationBuilder;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  *	 参考：
@@ -91,7 +91,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
 @Configuration
 @ConditionalOnProperty(prefix = Swagger2GatewayProperties.PREFIX, value = "enabled", havingValue = "true")
 @EnableConfigurationProperties({ Swagger2GatewayProperties.class })
-@EnableSwagger2WebFlux
+@EnableSwagger2
 @Import({ BeanValidatorPluginsConfiguration.class })
 public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFluxConfigurer {
 
@@ -140,7 +140,7 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFl
 					.host(swaggerProperties.getHost())
 					.apiInfo(apiInfo)
 					.securityContexts(Collections.singletonList(securityContext(swaggerProperties)))
-					.globalOperationParameters(buildGlobalOperationParametersFromSwagger2WebFluxProperties( swaggerProperties.getGlobalOperationParameters()));
+					.globalRequestParameters(buildGlobalOperationParametersFromSwagger2WebFluxProperties( swaggerProperties.getGlobalOperationParameters()));
 
 			switch (swaggerProperties.getAuthorization().getType()) {
 				case APIKEY:{
@@ -155,7 +155,7 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFl
 			}
 
 			// 全局响应消息
-			if (!swaggerProperties.getApplyDefaultResponseMessages()) {
+			if (!swaggerProperties.isApplyDefaultResponseMessages()) {
 				buildGlobalResponseMessage(swaggerProperties, docketForBuilder);
 			}
 
@@ -201,7 +201,7 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFl
 			Docket docketForBuilder = new Docket(DocumentationType.SWAGGER_2).host(swaggerProperties.getHost())
 					.apiInfo(apiInfo)
 					.securityContexts(Collections.singletonList(securityContext(swaggerProperties)))
-					.globalOperationParameters(assemblyGlobalOperationParameters(swaggerProperties.getGlobalOperationParameters(), docketInfo.getGlobalOperationParameters()));
+					.globalRequestParameters(assemblyGlobalOperationParameters(swaggerProperties.getGlobalOperationParameters(), docketInfo.getGlobalOperationParameters()));
 
 			switch (swaggerProperties.getAuthorization().getType()) {
 				case APIKEY:{
@@ -216,7 +216,7 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFl
 			}
 
 			// 全局响应消息
-			if (!swaggerProperties.getApplyDefaultResponseMessages()) {
+			if (!swaggerProperties.isApplyDefaultResponseMessages()) {
 				buildGlobalResponseMessage(swaggerProperties, docketForBuilder);
 			}
 
@@ -265,10 +265,13 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFl
 	 * @return
 	 */
 	private SecurityContext securityContext(Swagger2GatewayProperties swaggerProperties) {
+		Predicate<String> predicate = PathSelectors.regex(swaggerProperties.getAuthorization().getAuthRegex());
 		return SecurityContext.builder().securityReferences(defaultAuth(swaggerProperties))
-				.forPaths(PathSelectors.regex(swaggerProperties.getAuthorization().getAuthRegex())).build();
+				.operationSelector((ctx) -> {
+					return predicate.test(ctx.requestMappingPattern());
+				}).build();
 	}
-
+	
 	/**
 	 * 配置默认的全局鉴权策略；其中返回的 SecurityReference 中，reference
 	 * 即为ApiKey对象里面的name，保持一致才能开启全局鉴权
@@ -283,18 +286,19 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFl
 				.reference(swaggerProperties.getAuthorization().getName()).scopes(authorizationScopes).build());
 	}
 
-	private List<Parameter> buildGlobalOperationParametersFromSwagger2WebFluxProperties(
-			List<GlobalOperationParameter> globalOperationParameters) {
-		List<Parameter> parameters = new ArrayList<Parameter>();
+	private List<RequestParameter> buildGlobalOperationParametersFromSwagger2WebFluxProperties(
+			List<GlobalOperationParameter> globalRequestParameters) {
+		List<RequestParameter> parameters = new ArrayList<RequestParameter>();
 
-		if (Objects.isNull(globalOperationParameters)) {
+		if (Objects.isNull(globalRequestParameters)) {
 			return parameters;
 		}
-		for (GlobalOperationParameter globalOperationParameter : globalOperationParameters) {
-			parameters.add(new ParameterBuilder().name(globalOperationParameter.getName())
+		for (GlobalOperationParameter globalOperationParameter : globalRequestParameters) {
+			parameters.add(new RequestParameterBuilder()
+					.name(globalOperationParameter.getName())
 					.description(globalOperationParameter.getDescription())
-					.modelRef(new ModelRef(globalOperationParameter.getModelRef()))
-					.parameterType(globalOperationParameter.getParameterType())
+					//.modelRef(new ModelRef(globalOperationParameter.getModelRef()))
+					//.parameterType(globalOperationParameter.getParameterType())
 					.required(Boolean.parseBoolean(globalOperationParameter.getRequired())).build());
 		}
 		return parameters;
@@ -303,15 +307,15 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFl
 	/**
 	 * 局部参数按照name覆盖局部参数
 	 *
-	 * @param globalOperationParameters
+	 * @param globalRequestParameters
 	 * @param docketOperationParameters
 	 * @return
 	 */
-	private List<Parameter> assemblyGlobalOperationParameters(List<GlobalOperationParameter> globalOperationParameters,
+	private List<RequestParameter> assemblyGlobalOperationParameters(List<GlobalOperationParameter> globalRequestParameters,
 			List<GlobalOperationParameter> docketOperationParameters) {
 
 		if (Objects.isNull(docketOperationParameters) || docketOperationParameters.isEmpty()) {
-			return buildGlobalOperationParametersFromSwagger2WebFluxProperties(globalOperationParameters);
+			return buildGlobalOperationParametersFromSwagger2WebFluxProperties(globalRequestParameters);
 		}
 
 		Set<String> docketNames = docketOperationParameters.stream().map(GlobalOperationParameter::getName)
@@ -319,8 +323,8 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFl
 
 		List<GlobalOperationParameter> resultOperationParameters = new ArrayList<GlobalOperationParameter>();
 
-		if (Objects.nonNull(globalOperationParameters)) {
-			for (GlobalOperationParameter parameter : globalOperationParameters) {
+		if (Objects.nonNull(globalRequestParameters)) {
+			for (GlobalOperationParameter parameter : globalRequestParameters) {
 				if (!docketNames.contains(parameter.getName())) {
 					resultOperationParameters.add(parameter);
 				}
@@ -342,24 +346,24 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFl
 		GlobalResponseMessage globalResponseMessages = swaggerProperties.getGlobalResponseMessage();
 
 		/* POST,GET,PUT,PATCH,DELETE,HEAD,OPTIONS,TRACE 响应消息体 **/
-		List<ResponseMessage> postResponseMessages = getResponseMessageList(globalResponseMessages.getPost());
-		List<ResponseMessage> getResponseMessages = getResponseMessageList(globalResponseMessages.getGet());
-		List<ResponseMessage> putResponseMessages = getResponseMessageList(globalResponseMessages.getPut());
-		List<ResponseMessage> patchResponseMessages = getResponseMessageList(globalResponseMessages.getPatch());
-		List<ResponseMessage> deleteResponseMessages = getResponseMessageList(globalResponseMessages.getDelete());
-		List<ResponseMessage> headResponseMessages = getResponseMessageList(globalResponseMessages.getHead());
-		List<ResponseMessage> optionsResponseMessages = getResponseMessageList(globalResponseMessages.getOptions());
-		List<ResponseMessage> trackResponseMessages = getResponseMessageList(globalResponseMessages.getTrace());
+		List<Response> postResponseMessages = getResponseMessageList(globalResponseMessages.getPost());
+		List<Response> getResponseMessages = getResponseMessageList(globalResponseMessages.getGet());
+		List<Response> putResponseMessages = getResponseMessageList(globalResponseMessages.getPut());
+		List<Response> patchResponseMessages = getResponseMessageList(globalResponseMessages.getPatch());
+		List<Response> deleteResponseMessages = getResponseMessageList(globalResponseMessages.getDelete());
+		List<Response> headResponseMessages = getResponseMessageList(globalResponseMessages.getHead());
+		List<Response> optionsResponseMessages = getResponseMessageList(globalResponseMessages.getOptions());
+		List<Response> trackResponseMessages = getResponseMessageList(globalResponseMessages.getTrace());
 
-		docketForBuilder.useDefaultResponseMessages(swaggerProperties.getApplyDefaultResponseMessages())
-				.globalResponseMessage(RequestMethod.POST, postResponseMessages)
-				.globalResponseMessage(RequestMethod.GET, getResponseMessages)
-				.globalResponseMessage(RequestMethod.PUT, putResponseMessages)
-				.globalResponseMessage(RequestMethod.PATCH, patchResponseMessages)
-				.globalResponseMessage(RequestMethod.DELETE, deleteResponseMessages)
-				.globalResponseMessage(RequestMethod.HEAD, headResponseMessages)
-				.globalResponseMessage(RequestMethod.OPTIONS, optionsResponseMessages)
-				.globalResponseMessage(RequestMethod.TRACE, trackResponseMessages);
+		docketForBuilder.useDefaultResponseMessages(swaggerProperties.isApplyDefaultResponseMessages())
+				.globalResponses(HttpMethod.POST, postResponseMessages)
+				.globalResponses(HttpMethod.GET, getResponseMessages)
+				.globalResponses(HttpMethod.PUT, putResponseMessages)
+				.globalResponses(HttpMethod.PATCH, patchResponseMessages)
+				.globalResponses(HttpMethod.DELETE, deleteResponseMessages)
+				.globalResponses(HttpMethod.HEAD, headResponseMessages)
+				.globalResponses(HttpMethod.OPTIONS, optionsResponseMessages)
+				.globalResponses(HttpMethod.TRACE, trackResponseMessages);
 	}
 
 	/**
@@ -367,22 +371,22 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFl
 	 * @param globalResponseMessageBodyList 全局Code消息返回集合
 	 * @return
 	 */
-	private List<ResponseMessage> getResponseMessageList(
+	private List<Response> getResponseMessageList(
 			List<GlobalResponseMessageBody> globalResponseMessageBodyList) {
-		List<ResponseMessage> responseMessages = new ArrayList<>();
+		List<Response> responseMessages = new ArrayList<>();
 		for (GlobalResponseMessageBody globalResponseMessageBody : globalResponseMessageBodyList) {
-			ResponseMessageBuilder responseMessageBuilder = new ResponseMessageBuilder();
-			responseMessageBuilder.code(globalResponseMessageBody.getCode()).message(globalResponseMessageBody.getMessage());
+			ResponseBuilder responseMessageBuilder = new ResponseBuilder()
+						.code(globalResponseMessageBody.getCode())
+						.description(globalResponseMessageBody.getMessage());
 
 			if (!StringUtils.isEmpty(globalResponseMessageBody.getModelRef())) {
-				responseMessageBuilder.responseModel(new ModelRef(globalResponseMessageBody.getModelRef()));
+				//responseMessageBuilder.responseModel(new ModelRef(globalResponseMessageBody.getModelRef()));
 			}
 			responseMessages.add(responseMessageBuilder.build());
 		}
 
 		return responseMessages;
 	}
-	
 	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
