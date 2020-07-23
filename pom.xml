@@ -15,7 +15,7 @@
 	<packaging>jar</packaging>
 	<name>Spring Cloud Gateway Swagger2</name>
 	<description>Spring Cloud Gateway Swagger2</description>
-	<version>1.0.0.RELEASE</version>
+	<version>1.0.2-SNAPSHOT</version>
 	<url>https://github.com/hiwepy/${project.artifactId}</url>
 	
 	<licenses>
@@ -387,7 +387,7 @@
         <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
 		<!-- http://oss.jfrog.org/artifactory/oss-snapshot-local/io/springfox/ -->
-		<springfox.version>2.10.5</springfox.version> <!-- 3.0.0-SNAPSHOT -->
+		<springfox.version>3.0.0</springfox.version> <!-- 3.0.0-SNAPSHOT -->
 		<swagger.version>1.5.24</swagger.version>
 		<swagger-bootstrap-ui.version>1.9.6</swagger-bootstrap-ui.version> 
 		<swagger-butler.version>1.2.0</swagger-butler.version>
