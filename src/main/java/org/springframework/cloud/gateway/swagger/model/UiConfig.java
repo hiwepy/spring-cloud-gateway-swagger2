@@ -62,6 +62,7 @@ public class UiConfig {
     private Integer maxDisplayedTags;
     private OperationsSorter operationsSorter;
     private Boolean showExtensions;
+    private Boolean showCommonExtensions = false;
     private TagsSorter tagsSorter;
 
     /**
@@ -195,6 +196,16 @@ public class UiConfig {
 
 	public void setShowExtensions(Boolean showExtensions) {
 		this.showExtensions = showExtensions;
+	}
+	
+	
+
+	public Boolean getShowCommonExtensions() {
+		return showCommonExtensions;
+	}
+
+	public void setShowCommonExtensions(Boolean showCommonExtensions) {
+		this.showCommonExtensions = showCommonExtensions;
 	}
 
 	public TagsSorter getTagsSorter() {

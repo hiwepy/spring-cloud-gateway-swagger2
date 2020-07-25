@@ -110,6 +110,9 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFl
 				.maxDisplayedTags(swaggerProperties.getUiConfig().getMaxDisplayedTags())
 				.operationsSorter(swaggerProperties.getUiConfig().getOperationsSorter())
 				.showExtensions(swaggerProperties.getUiConfig().getShowExtensions())
+				.showCommonExtensions(swaggerProperties.getUiConfig().getShowCommonExtensions())
+				.supportedSubmitMethods(UiConfiguration.Constants.DEFAULT_SUBMIT_METHODS)
+				//.swaggerUiBaseUrl(swaggerUiBaseUrl)
 				.tagsSorter(swaggerProperties.getUiConfig().getTagsSorter())
 				.validatorUrl(swaggerProperties.getUiConfig().getValidatorUrl())
 				.build();
@@ -160,7 +163,7 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFl
 			}
 
 			Docket docket = docketForBuilder.select()
-					.apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()))
+					.apis( StringUtils.hasText(swaggerProperties.getBasePackage()) ? RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()) : RequestHandlerSelectors.any())
 					.paths(StringUtils.hasText(swaggerProperties.getBasePathPattern()) ? PathSelectors.ant(swaggerProperties.getBasePathPattern()) : PathSelectors.any())
 					.build();
 
