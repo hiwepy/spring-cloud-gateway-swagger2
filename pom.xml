@@ -386,83 +386,17 @@
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
         <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
-		<!-- http://oss.jfrog.org/artifactory/oss-snapshot-local/io/springfox/ -->
-		<springfox.version>3.0.0</springfox.version> <!-- 3.0.0-SNAPSHOT -->
-		<swagger.version>1.5.24</swagger.version>
-		<swagger2.version>2.1.3</swagger2.version>
-		<swagger-bootstrap-ui.version>1.9.6</swagger-bootstrap-ui.version> 
+		<springfox.version>3.0.0</springfox.version>
+		<swagger2.version>2.1.9</swagger2.version>
+		<webjars-locator.version>0.40</webjars-locator.version>
+		<webjars-locator-core.version>0.46</webjars-locator-core.version>
+		<classgraph.version>4.8.102</classgraph.version>
+		<swagger-knife4j-ui.version>3.0.2</swagger-knife4j-ui.version>
+		<swagger-springfox-ui.version>${springfox.version}</swagger-springfox-ui.version> 
 	</properties>
 	
 	<dependencyManagement>
 		<dependencies>
-			
-			<!-- https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter -->
-			<dependency>
-			    <groupId>io.springfox</groupId>
-			    <artifactId>springfox-boot-starter</artifactId>
-			    <version>${springfox.version}</version>
-			</dependency>
-			<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
-			<dependency>
-			    <groupId>io.springfox</groupId>
-			    <artifactId>springfox-swagger-ui</artifactId>
-			    <version>${springfox.version}</version>
-			</dependency> 
-			
-			<dependency>
-		      <groupId>io.swagger.core.v3</groupId>
-		      <artifactId>swagger-annotations</artifactId>
-		      <version>2.1.2</version>
-		      <scope>compile</scope>
-		    </dependency>
-		    <dependency>
-		      <groupId>io.swagger.core.v3</groupId>
-		      <artifactId>swagger-models</artifactId>
-		      <version>2.1.2</version>
-		      <scope>compile</scope>
-		    </dependency>
-		    
-			<!-- https://mvnrepository.com/artifact/io.swagger -->
-			<dependency>
-				<groupId>io.swagger</groupId>
-				<artifactId>swagger-annotations</artifactId>
-				<version>${swagger.version}</version>
-			</dependency>
-			<dependency>
-			    <groupId>io.swagger</groupId>
-			    <artifactId>swagger-core</artifactId>
-			    <version>${swagger.version}</version>
-			</dependency>
-			<dependency>
-			    <groupId>io.swagger</groupId>
-			    <artifactId>swagger-models</artifactId>
-			    <version>${swagger.version}</version>
-			</dependency>
-			<dependency>
-			    <groupId>io.swagger</groupId>
-			    <artifactId>swagger-jaxrs</artifactId>
-			    <version>${swagger.version}</version>
-			</dependency>
-			<dependency>
-			    <groupId>io.swagger</groupId>
-			    <artifactId>swagger-servlet</artifactId>
-			    <version>${swagger.version}</version>
-			</dependency>
-			<dependency>
-			    <groupId>io.swagger</groupId>
-			    <artifactId>swagger-jersey-jaxrs</artifactId>
-			    <version>${swagger.version}</version>
-			</dependency>
-			<dependency>
-			    <groupId>io.swagger</groupId>
-			    <artifactId>swagger-jersey2-jaxrs</artifactId>
-			    <version>${swagger.version}</version>
-			</dependency>
-			<dependency>
-			    <groupId>io.swagger</groupId>
-			    <artifactId>swagger-hibernate-validations</artifactId>
-			    <version>${swagger.version}</version>
-			</dependency>
 			
 			<!-- https://mvnrepository.com/artifact/io.swagger.core.v3 -->
 			<dependency>
@@ -481,11 +415,42 @@
 				<version>${swagger2.version}</version>
 			</dependency>
 			
-			<!-- https://mvnrepository.com/artifact/com.github.xiaoymin/swagger-bootstrap-ui -->
+			<!-- https://mvnrepository.com/artifact/org.webjars/webjars-locator -->
 			<dependency>
-				<groupId>com.github.xiaoymin</groupId>
-				<artifactId>swagger-bootstrap-ui</artifactId>
-				<version>${swagger-bootstrap-ui.version}</version>
+				<groupId>org.webjars</groupId>
+				<artifactId>webjars-locator</artifactId>
+				<version>${webjars-locator.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.webjars/webjars-locator-core -->
+			<dependency>
+			    <groupId>org.webjars</groupId>
+			    <artifactId>webjars-locator-core</artifactId>
+			    <version>${webjars-locator-core.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/io.github.classgraph/classgraph -->
+			<dependency>
+			    <groupId>io.github.classgraph</groupId>
+			    <artifactId>classgraph</artifactId>
+			    <version>${classgraph.version}</version>
+			</dependency>
+			
+			<!-- https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter -->
+			<dependency>
+			    <groupId>io.springfox</groupId>
+			    <artifactId>springfox-boot-starter</artifactId>
+			    <version>${springfox.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
+			<dependency>
+			    <groupId>io.springfox</groupId>
+			    <artifactId>springfox-swagger-ui</artifactId>
+			    <version>${swagger-springfox-ui.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/com.github.xiaoymin/knife4j-spring-ui -->
+			<dependency>
+			    <groupId>com.github.xiaoymin</groupId>
+			    <artifactId>knife4j-spring-ui</artifactId>
+			    <version>${swagger-knife4j-ui.version}</version>
 			</dependency>
 			
 		</dependencies>
@@ -544,23 +509,13 @@
 		    <groupId>org.springframework.cloud</groupId>
 		    <artifactId>spring-cloud-gateway-webflux</artifactId>
 		</dependency>
-		<!-- For Swagger2 -->
-        <dependency>
-			<groupId>io.swagger</groupId>
-			<artifactId>swagger-annotations</artifactId>
-		</dependency>
-		<dependency>
-		    <groupId>io.swagger</groupId>
-		    <artifactId>swagger-core</artifactId>
-		</dependency>
-		<dependency>
-		    <groupId>io.swagger</groupId>
-		    <artifactId>swagger-models</artifactId>
-		</dependency>
+		
+		<!-- For SpringFox 3.x -->
         <dependency>
 		    <groupId>io.springfox</groupId>
 		    <artifactId>springfox-boot-starter</artifactId>
 		</dependency>
+		<!-- For Swagger UI -->
 		<dependency>
 		    <groupId>io.springfox</groupId>
 		    <artifactId>springfox-swagger-ui</artifactId>
@@ -568,9 +523,10 @@
 		</dependency>
 		<dependency>
 			<groupId>com.github.xiaoymin</groupId>
-			<artifactId>swagger-bootstrap-ui</artifactId>
+			<artifactId>knife4j-spring-ui</artifactId>
 			<optional>true</optional>
 		</dependency>
+		
 	</dependencies>
 
 </project>
