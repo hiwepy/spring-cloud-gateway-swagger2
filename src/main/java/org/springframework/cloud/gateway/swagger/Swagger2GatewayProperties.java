@@ -99,6 +99,11 @@ public class Swagger2GatewayProperties {
      * swagger会解析的url规则:ant表达式
      **/
     private String basePathPattern = "";
+    
+	/**
+     * swagger API 路由ID表达式，不指定则使用所有的路由
+     */
+	private String routePattern = "";
 
 	/**
 	 * 分组文档

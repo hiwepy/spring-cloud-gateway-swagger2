@@ -407,8 +407,9 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFl
 	
 	@Bean
 	@Primary
-	public SwaggerResourcesProvider swaggerResources(RouteLocator routeLocator, GatewayProperties gatewayProperties) {
-		return new GatewaySwaggerResourcesProvider(routeLocator, gatewayProperties);
+	public SwaggerResourcesProvider swaggerResources(RouteLocator routeLocator,
+			GatewayProperties gatewayProperties,Swagger2GatewayProperties swagger2GatewayProperties ) {
+		return new GatewaySwaggerResourcesProvider(routeLocator, gatewayProperties, swagger2GatewayProperties);
 	}
 
 	@Bean
