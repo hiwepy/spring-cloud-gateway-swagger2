@@ -28,11 +28,14 @@ import org.springframework.cloud.gateway.swagger.model.GlobalOperationParameter;
 import org.springframework.cloud.gateway.swagger.model.GlobalResponseMessage;
 import org.springframework.cloud.gateway.swagger.model.UiConfig;
 
+import lombok.Data;
+
 /**
  * TODO
  * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
  */
 @ConfigurationProperties(Swagger2GatewayProperties.PREFIX)
+@Data
 public class Swagger2GatewayProperties {
 
 	public static final String PREFIX = "spring.cloud.gateway.swagger";
@@ -102,7 +105,12 @@ public class Swagger2GatewayProperties {
 	 * host信息
 	 **/
 	private String host = "";
-	  
+
+	/**
+     * swagger API 路由ID表达式，不指定则使用所有的路由
+     */
+	private String routePattern = "";
+	
 	/**
 	 * 全局参数配置
 	 **/
@@ -127,165 +135,5 @@ public class Swagger2GatewayProperties {
 	 * 全局统一鉴权配置
 	 **/
 	private Authorization authorization = new Authorization();
-
-	public boolean getEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	public boolean isEnableUrlTemplating() {
-		return enableUrlTemplating;
-	}
-
-	public void setEnableUrlTemplating(boolean enableUrlTemplating) {
-		this.enableUrlTemplating = enableUrlTemplating;
-	}
-
-	public boolean isForCodeGen() {
-		return forCodeGen;
-	}
-
-	public void setForCodeGen(boolean forCodeGen) {
-		this.forCodeGen = forCodeGen;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getVersion() {
-		return version;
-	}
-
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
-	public String getLicense() {
-		return license;
-	}
-
-	public void setLicense(String license) {
-		this.license = license;
-	}
-
-	public String getLicenseUrl() {
-		return licenseUrl;
-	}
-
-	public void setLicenseUrl(String licenseUrl) {
-		this.licenseUrl = licenseUrl;
-	}
-
-	public String getTermsOfServiceUrl() {
-		return termsOfServiceUrl;
-	}
-
-	public void setTermsOfServiceUrl(String termsOfServiceUrl) {
-		this.termsOfServiceUrl = termsOfServiceUrl;
-	}
-
-	public List<Class<?>> getIgnoredParameterTypes() {
-		return ignoredParameterTypes;
-	}
-
-	public void setIgnoredParameterTypes(List<Class<?>> ignoredParameterTypes) {
-		this.ignoredParameterTypes = ignoredParameterTypes;
-	}
-
-	public Contact getContact() {
-		return contact;
-	}
-
-	public void setContact(Contact contact) {
-		this.contact = contact;
-	}
-
-	public String getBasePackage() {
-		return basePackage;
-	}
-
-	public void setBasePackage(String basePackage) {
-		this.basePackage = basePackage;
-	}
-
-	public String getBasePathPattern() {
-		return basePathPattern;
-	}
-
-	public void setBasePathPattern(String basePathPattern) {
-		this.basePathPattern = basePathPattern;
-	}
-
-	public Map<String, DocketInfo> getDocket() {
-		return docket;
-	}
-
-	public void setDocket(Map<String, DocketInfo> docket) {
-		this.docket = docket;
-	}
-
-	public String getHost() {
-		return host;
-	}
-
-	public void setHost(String host) {
-		this.host = host;
-	}
-
-	public List<GlobalOperationParameter> getGlobalOperationParameters() {
-		return globalOperationParameters;
-	}
-
-	public void setGlobalOperationParameters(List<GlobalOperationParameter> globalOperationParameters) {
-		this.globalOperationParameters = globalOperationParameters;
-	}
-
-	public UiConfig getUiConfig() {
-		return uiConfig;
-	}
-
-	public void setUiConfig(UiConfig uiConfig) {
-		this.uiConfig = uiConfig;
-	}
-
-	public boolean getApplyDefaultResponseMessages() {
-		return applyDefaultResponseMessages;
-	}
-
-	public void setApplyDefaultResponseMessages(boolean applyDefaultResponseMessages) {
-		this.applyDefaultResponseMessages = applyDefaultResponseMessages;
-	}
-
-	public GlobalResponseMessage getGlobalResponseMessage() {
-		return globalResponseMessage;
-	}
-
-	public void setGlobalResponseMessage(GlobalResponseMessage globalResponseMessage) {
-		this.globalResponseMessage = globalResponseMessage;
-	}
-
-	public Authorization getAuthorization() {
-		return authorization;
-	}
-
-	public void setAuthorization(Authorization authorization) {
-		this.authorization = authorization;
-	}
 	
 }

@@ -155,7 +155,7 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFl
 			}
 
 			// 全局响应消息
-			if (!swaggerProperties.getApplyDefaultResponseMessages()) {
+			if (!swaggerProperties.isApplyDefaultResponseMessages()) {
 				buildGlobalResponseMessage(swaggerProperties, docketForBuilder);
 			}
 
@@ -216,7 +216,7 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFl
 			}
 
 			// 全局响应消息
-			if (!swaggerProperties.getApplyDefaultResponseMessages()) {
+			if (!swaggerProperties.isApplyDefaultResponseMessages()) {
 				buildGlobalResponseMessage(swaggerProperties, docketForBuilder);
 			}
 
@@ -351,7 +351,7 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFl
 		List<ResponseMessage> optionsResponseMessages = getResponseMessageList(globalResponseMessages.getOptions());
 		List<ResponseMessage> trackResponseMessages = getResponseMessageList(globalResponseMessages.getTrace());
 
-		docketForBuilder.useDefaultResponseMessages(swaggerProperties.getApplyDefaultResponseMessages())
+		docketForBuilder.useDefaultResponseMessages(swaggerProperties.isApplyDefaultResponseMessages())
 				.globalResponseMessage(RequestMethod.POST, postResponseMessages)
 				.globalResponseMessage(RequestMethod.GET, getResponseMessages)
 				.globalResponseMessage(RequestMethod.PUT, putResponseMessages)
@@ -400,8 +400,9 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFl
 	
 	@Bean
 	@Primary
-	public SwaggerResourcesProvider swaggerResources(RouteLocator routeLocator, GatewayProperties gatewayProperties) {
-		return new GatewaySwaggerResourcesProvider(routeLocator, gatewayProperties);
+	public SwaggerResourcesProvider swaggerResources(RouteLocator routeLocator,
+			GatewayProperties gatewayProperties,Swagger2GatewayProperties swagger2GatewayProperties ) {
+		return new GatewaySwaggerResourcesProvider(routeLocator, gatewayProperties, swagger2GatewayProperties);
 	}
 
 	@Bean
