@@ -15,7 +15,7 @@
 	<packaging>jar</packaging>
 	<name>Spring Cloud Gateway Swagger2</name>
 	<description>Spring Cloud Gateway Swagger2</description>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0.3.RELEASE</version>
 	<url>https://github.com/hiwepy/${project.artifactId}</url>
 	
 	<licenses>
