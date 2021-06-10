@@ -48,7 +48,7 @@ public class GlobalOperationParameter {
 	/**
 	 * 参数是否必须传
 	 **/
-	private String required;
+	private boolean required;
 	
 	/**
 	 * 参数是否隐藏
