@@ -15,6 +15,9 @@
  */
 package org.springframework.cloud.gateway.swagger.model;
 
+import lombok.Data;
+
+@Data
 public class GlobalResponseMessageBody {
 
 	/**
@@ -31,29 +34,5 @@ public class GlobalResponseMessageBody {
 	 * 响应体
 	 **/
 	private String modelRef;
-
-	public int getCode() {
-		return code;
-	}
-
-	public void setCode(int code) {
-		this.code = code;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public String getModelRef() {
-		return modelRef;
-	}
-
-	public void setModelRef(String modelRef) {
-		this.modelRef = modelRef;
-	}
 
 }

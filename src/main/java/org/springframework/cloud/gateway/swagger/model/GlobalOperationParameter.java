@@ -15,6 +15,9 @@
  */
 package org.springframework.cloud.gateway.swagger.model;
 
+import lombok.Data;
+
+@Data
 public class GlobalOperationParameter {
 	
 	/**
@@ -26,6 +29,11 @@ public class GlobalOperationParameter {
 	 * 描述信息
 	 **/
 	private String description;
+	
+	/**
+	 * 默认值
+	 **/
+	private String defaultValue;
 
 	/**
 	 * 指定参数类型
@@ -41,45 +49,20 @@ public class GlobalOperationParameter {
 	 * 参数是否必须传
 	 **/
 	private String required;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getModelRef() {
-		return modelRef;
-	}
-
-	public void setModelRef(String modelRef) {
-		this.modelRef = modelRef;
-	}
-
-	public String getParameterType() {
-		return parameterType;
-	}
-
-	public void setParameterType(String parameterType) {
-		this.parameterType = parameterType;
-	}
-
-	public String getRequired() {
-		return required;
-	}
-
-	public void setRequired(String required) {
-		this.required = required;
-	}
+	
+	/**
+	 * 参数是否隐藏
+	 **/
+	private boolean hidden;
+	
+	/**
+	 * 参数格式
+	 **/
+	private String pattern;
+  
+	/**
+	 * 参数是否允许为空
+	 **/
+	private boolean allowEmptyValue;
 
 }

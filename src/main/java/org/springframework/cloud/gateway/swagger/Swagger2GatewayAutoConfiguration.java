@@ -293,9 +293,14 @@ public class Swagger2GatewayAutoConfiguration implements BeanFactoryAware, WebFl
 		for (GlobalOperationParameter globalOperationParameter : globalOperationParameters) {
 			parameters.add(new ParameterBuilder().name(globalOperationParameter.getName())
 					.description(globalOperationParameter.getDescription())
+					.defaultValue(globalOperationParameter.getDefaultValue())
+					.allowEmptyValue(globalOperationParameter.isAllowEmptyValue())
 					.modelRef(new ModelRef(globalOperationParameter.getModelRef()))
 					.parameterType(globalOperationParameter.getParameterType())
-					.required(Boolean.parseBoolean(globalOperationParameter.getRequired())).build());
+					.pattern(globalOperationParameter.getPattern())
+					.hidden(globalOperationParameter.isHidden())
+					.required(Boolean.parseBoolean(globalOperationParameter.getRequired()))
+					.build());
 		}
 		return parameters;
 	}
