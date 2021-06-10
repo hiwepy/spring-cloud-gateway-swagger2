@@ -64,5 +64,10 @@ public class GlobalOperationParameter {
 	 * 参数是否允许为空
 	 **/
 	private boolean allowEmptyValue;
+	
+	/**
+	 * 参数示例
+	 **/
+	private Object scalarExample;
 
 }

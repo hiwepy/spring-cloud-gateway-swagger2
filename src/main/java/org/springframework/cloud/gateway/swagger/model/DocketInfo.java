@@ -34,6 +34,10 @@ public class DocketInfo {
 	 */
 	private boolean forCodeGen = false;
 	/**
+	 * 名称
+	 **/
+	private String name = "";
+	/**
 	 * 标题
 	 **/
 	private String title = "";
