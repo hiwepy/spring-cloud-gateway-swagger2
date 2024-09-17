@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.cloud</groupId>
 		<artifactId>spring-cloud-starter-parent</artifactId>
-		<version>2021.0.8</version>
+		<version>2023.0.3</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	
@@ -15,7 +15,7 @@
 	<packaging>jar</packaging>
 	<name>Spring Cloud Gateway Swagger2</name>
 	<description>Spring Cloud Gateway Swagger2</description>
-	<version>2021.0.x.20240823.RELEASE</version>
+	<version>2023.0.x.20240823.RELEASE</version>
 	<url>https://github.com/hiwepy/${project.artifactId}</url>
 	
 	<licenses>
@@ -398,10 +398,9 @@
 		<maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
 		<maven-war-plugin.version>3.4.0</maven-war-plugin.version>
 		<!-- Dependency versions -->
-		<springfox.version>2.10.5</springfox.version>
-		<swagger.version>1.5.24</swagger.version>
-		<swagger-bootstrap-ui.version>1.9.6</swagger-bootstrap-ui.version> 
-		<swagger-butler.version>1.2.0</swagger-butler.version>
+		<springfox.version>3.0.0</springfox.version>
+		<swagger.version>1.6.14</swagger.version>
+		<swagger-bootstrap-ui.version>1.9.6</swagger-bootstrap-ui.version>
 	</properties>
 	
 	<dependencyManagement>
@@ -520,7 +519,7 @@
 			    <artifactId>springfox-spring-web</artifactId>
 			    <version>${springfox.version}</version>
 			</dependency>
-			
+
 			<!-- https://mvnrepository.com/artifact/io.swagger -->
 			<dependency>
 				<groupId>io.swagger</groupId>
@@ -584,8 +583,8 @@
 		
 		<!-- Java Servlet API -->
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
 			<optional>true</optional>
 		</dependency>
 
