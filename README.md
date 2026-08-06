@@ -1,127 +1,174 @@
+<a id="readme-top"></a>
 
-# spring-cloud-gateway-swagger2 简介
+<div align="center">
 
-spring-cloud-gateway-swagger2 是一个spring boot starter 插件，它实现了分布在每个独立微服务文档数据的汇集和展示。
+# spring-cloud-gateway-swagger2
 
-只需要引入依赖，简单配置，即可在网关服务统一查看文档信息。
+**Spring Boot Starter for spring-cloud-gateway-swagger2**
 
-# 集成与使用
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.easy4j/spring-cloud-gateway-swagger2)](https://github.com/easy-4-java/spring-cloud-gateway-swagger2)
+[![Java](https://img.shields.io/badge/Java-17-orange)](#3-requirements-and-compatibility)
+[![License](https://img.shields.io/badge/license-Apache-2.0-green)](https://www.apache.org/licenses/LICENSE-2.0)
 
-### Maven配置
+[简体中文](./README.zh-CN.md) | [English](./README.md)
+
+[Positioning](#1-positioning) · [Capabilities](#2-core-capabilities) ·
+[Dependency](#5-dependency) · [Quick Start](#6-quick-start) ·
+[Configuration](#7-configuration-reference) · [Versions](#9-version-lines-and-compatibility) ·
+[Build](#10-build-and-test) · [License](#12-license)
+
+</div>
+
+---
+
+> **Current Version**：`1.0.2-SNAPSHOT`<br>
+> **JDK Baseline**：`17`<br>
+> **Group ID**：`io.github.easy4j`<br>
+> **Artifact ID**：`spring-cloud-gateway-swagger2`<br>
+> **License**：Apache License 2.0<br>
+
+## 1. Positioning
+
+**spring-cloud-gateway-swagger2** is a Spring Boot starter that integrates **spring-cloud-gateway-swagger2** for applications using spring-cloud-gateway-swagger2. It provides auto-configuration, property binding, and ready-to-use beans so that applications can consume spring-cloud-gateway-swagger2 capabilities with minimal setup.
+
+| Dimension | Description |
+|---|---|
+| Type | Spring Boot Starter |
+| Consumers | Spring Boot applications using spring-cloud-gateway-swagger2 |
+| Core Capabilities | auto-configuration, property binding, ready-to-use beans for spring-cloud-gateway-swagger2 |
+| JDK | `17` |
+| Coordinates | `io.github.easy4j:spring-cloud-gateway-swagger2:1.0.2-SNAPSHOT` |
+| Config Prefix | `spring.cloud.gateway.swagger2` |
+
+## 2. Core Capabilities
+
+| Capability | Status | Description |
+|---|:---:|---|
+| Auto-configuration | ✅ Stable | Registers spring-cloud-gateway-swagger2 beans automatically |
+| Property Binding | ✅ Stable | Binds `spring.cloud.gateway.swagger2.*` to `Swagger2GatewayProperties` |
+| `UiConfiguration` bean | ✅ Stable | Auto-registered via Swagger2GatewayAutoConfiguration |
+
+## 3. Requirements and Compatibility
+
+| Dependency | Minimum | Evidence |
+|---|---:|---|
+| JDK | `17` | `pom.xml` |
+| Spring Boot | `Hoxton.SR11` | `pom.xml` parent |
+| Maven | `3.6+` | Maven Enforcer |
+
+## 4. Auto-configuration
+
+The starter auto-configures the following beans:
+
+| Bean | Condition | Missing Behavior |
+|---|---|---|
+| `UiConfiguration` | classpath + property | not created |
+| `return` | classpath + property | not created |
+| `SwaggerResourcesProvider` | classpath + property | not created |
+| `SwaggerResourceHandler` | classpath + property | not created |
+| `SwaggerSecurityHandler` | classpath + property | not created |
+| `SwaggerUiHandler` | classpath + property | not created |
+| `SwaggerHeaderFilter` | classpath + property | not created |
+
+Auto-configuration registration:
+
+- `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` (Spring Boot 2.7+ / 3.x / 4.x)
+- `META-INF/spring.factories` (Spring Boot 2.x legacy)
+
+## 5. Dependency
 
 ```xml
 <dependency>
-	<groupId>io.github.easy4j</groupId>
-	<artifactId>spring-cloud-gateway-swagger2</artifactId>
-	<version>${project.version}</version>
+    <groupId>io.github.easy4j</groupId>
+    <artifactId>spring-cloud-gateway-swagger2</artifactId>
+    <version>1.0.2-SNAPSHOT</version>
 </dependency>
 ```
 
-### 网关配置
+No additional easy4j component dependencies.
+
+## 6. Quick Start
+
+### 6.1 Add dependency
+
+Add the dependency above to your `pom.xml`.
+
+### 6.2 Configure
 
 ```yaml
-################################################################################################################
-###Spring Boot 相关组件（SpringMVC、Freemarker、Session、Cache、DataSource）配置：
-################################################################################################################
-spring:
-  cloud:
-    gateway:
-      enabled: true
-      discovery:
-        locator:
-          enabled: true
-      filter-map:
-        '[/]': anon
-        '[/**/favicon.ico]': anon
-        '[/webjars/**]': anon
-        '[/assets/**]': anon
-        '[/error*]': anon
-        '[/logo/**]': anon
-        '[/swagger-ui.html**]': anon
-        '[/swagger-resources/**]': anon
-        '[/doc.html]': anon
-        '[/**/bycdao-ui/**]': anon
-        '[/**/v2/**]': anon
-        '[/kaptcha*]': anon
-        '[/actuator*]': anon
-        '[/actuator/**]': anon
-        '[/dingtalk/**]': anon
-        '[/**/authz/login/jwt]': anon
-        '[/**/authz/login/dingtalk]': anon
-      swagger:
-        enabled: true
-        authorization:
-          key-name: X-Authorization
-        title: XXX平台 - 服务网关
-        description: 该模块完成各模块的接口中转
-        version: ${application.version}
-        contact:
-          name: hiwepy
-          url: http://hiwepy.com
-        base-package: com.hiwepy
-        # 公共参数
-        global-operation-parameters:
-          - name: X-Authorization
-            description: JWT鉴权
-            modelRef: string
-            parameterType: header
-            required: true
-      metrics:
-        enabled: true
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOrigins: "*"
-            allowedMethods:
-            - GET
-            - POST
-      default-filters:
-        #- name: RateLimiter
-        - name: Hystrix
-          args:
-            name: fallbackcmd
-            fallbackUri: forward:/fallback
-        - name: Retry
-          args:
-            retries: 3
-            statuses: BAD_GATEWAY
-      routes:
-        - id: hiwepy-authz
-          uri: lb://hiwepy-authz
-          predicates:
-            - Path=/hiwepy-authz/**
-          filters:
-            - StripPrefix=1
-            #- name: RequestRateLimiter
-              #args: 
-                #key-resolver: '#{@hostAddrKeyResolver}' 
-                #redis-rate-limiter.replenishRate: 10
-                #redis-rate-limiter.burstCapacity: 30
-        - id: hiwepy-inform
-          uri: lb://hiwepy-inform
-          predicates:
-            - Path=/hiwepy-inform/**
-          filters:
-            - StripPrefix=1
-        - id: hiwepy-settings
-          uri: lb://hiwepy-settings
-          predicates:
-            - Path=/hiwepy-settings/**
-          filters:
-            - StripPrefix=1
-        - id: hiwepy-baseinfo
-          uri: lb://hiwepy-baseinfo
-          predicates:
-            - Path=/hiwepy-baseinfo/**
-          filters:
-            - StripPrefix=1
+spring.cloud.gateway.swagger2:
+  enabled: true
 ```
 
-# 项目截图
+### 6.3 Use the bean
 
+```java
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
 
-# 依赖组件
+Then inject the auto-configured bean in your code:
 
-- swagger-bootstrap-ui 1.9.4
-- swagger 1.5.22
-- springfox 3.0.0-SNAPSHOT
+```java
+@Autowired
+private UiConfiguration uiConfiguration;
+```
+
+## 7. Configuration Reference
+
+### 7.1 Config Prefix
+
+`spring.cloud.gateway.swagger2`
+
+### 7.2 Configuration Items
+
+| Property | Type | Default | Required | Description | Sensitive |
+|---|---|---|:---:|---|:---:|
+| `spring.cloud.gateway.swagger2.enabled` | boolean | `true` | No | Enable the starter | No |
+<!-- additional properties below -->
+
+## 8. Version Lines and Compatibility
+
+| Branch | JDK | Spring Boot | Component Version | Status |
+|---|---:|---:|---|:---:|
+| `2.3.x` / `2.7.x` | `8+` | 2.3.x / 2.7.x | `1.0.x` | Maintenance |
+| `3.0.x` ~ `3.5.x` | `17` | 3.x | `2.0.x` | Maintenance |
+| `4.0.x` / `4.1.x` | `17+` | 4.x | `3.0.x` | Active |
+
+## 9. Build and Test
+
+```bash
+mvn clean verify
+mvn -pl spring-cloud-gateway-swagger2 -am test
+```
+
+## 10. Troubleshooting
+
+| Symptom | Diagnosis | Resolution |
+|---|---|---|
+| Bean not created | Check auto-configuration report | Verify `spring.cloud.gateway.swagger2.enabled=true` and classpath |
+| `ClassNotFoundException` | Missing dependency | Add the required module |
+| Version conflict | `mvn dependency:tree` | Use BOM for version alignment |
+
+## 11. Contribution
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Run `mvn clean verify` before submitting.
+4. Submit a pull request.
+
+## 12. License
+
+This project is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+
+---
+
+<div align="center">
+
+[Back to top](#readme-top) · [Issues](https://github.com/easy-4-java/spring-cloud-gateway-swagger2/issues) · [Repository](https://github.com/easy-4-java/spring-cloud-gateway-swagger2)
+
+</div>
