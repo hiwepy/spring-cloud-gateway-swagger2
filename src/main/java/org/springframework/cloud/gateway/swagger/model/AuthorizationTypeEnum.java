@@ -19,7 +19,7 @@ import java.util.NoSuchElementException;
 
 /**
  * 鉴权策略，可选 ApiKey | BasicAuth | None，默认ApiKey
- * @author ： <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
 public enum AuthorizationTypeEnum {
 

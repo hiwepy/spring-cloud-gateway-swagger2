@@ -34,7 +34,7 @@ import lombok.ToString;
 
 /**
  * TODO
- * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
 @ConfigurationProperties(Swagger2GatewayProperties.PREFIX)
 @Getter
